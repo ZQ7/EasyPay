@@ -13,6 +13,7 @@ import com.yi2580.easypay.utils.WeChatPayUtils;
 
 /**
  * 微信支付请求
+ * 微信APP支付文档 https://pay.weixin.qq.com/wiki/doc/api/app/app.php?chapter=8_1
  *
  * @author Administrator
  */

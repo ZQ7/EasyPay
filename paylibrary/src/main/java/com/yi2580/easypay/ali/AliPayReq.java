@@ -15,7 +15,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * https://docs.open.alipay.com/204
+ * 支付宝支付请求
+ * 支付宝APP支付文档 https://docs.open.alipay.com/204
  */
 public class AliPayReq {
 
