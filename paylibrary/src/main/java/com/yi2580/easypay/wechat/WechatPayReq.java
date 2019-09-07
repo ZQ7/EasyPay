@@ -214,4 +214,11 @@ public class WechatPayReq {
 
     }
 
+    protected void release() {
+        this.mWXApi = null;
+        this.mPayReq = null;
+        this.mCallback = null;
+        this.mActivity = null;
+    }
+
 }

@@ -56,4 +56,9 @@ public class EasyPay {
         AliPayAPI.getInstance().sendPayReq(aliPayReq);
     }
 
+    public void release() {
+        AliPayAPI.getInstance().release();
+        WechatPayAPI.getInstance().release();
+    }
+
 }

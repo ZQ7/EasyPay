@@ -34,6 +34,10 @@ public class WechatPayAPI {
      * @param wechatPayReq
      */
     public void sendPayReq(WechatPayReq wechatPayReq) {
+        if (this.mPayReq!=null){
+            this.mPayReq.release();
+            this.mPayReq = null;
+        }
         this.mPayReq = wechatPayReq;
         wechatPayReq.send();
     }
@@ -44,5 +48,13 @@ public class WechatPayAPI {
      */
     public WechatPayReq getPayReq() {
         return mPayReq;
+    }
+
+    public void release() {
+        if (this.mPayReq != null) {
+            this.mPayReq.release();
+            this.mPayReq = null;
+            mInstance = null;
+        }
     }
 }

@@ -77,6 +77,8 @@ public class AliPayReq {
      * 发送支付宝支付请求
      */
     public void send() {
+        if (mActivity==null||mHandler==null)
+            return;
         Runnable payRunnable = new Runnable() {
 
             @Override
@@ -284,6 +286,12 @@ public class AliPayReq {
             return aliPayReq;
         }
 
+    }
+
+    protected void release() {
+        mHandler = null;
+        this.mCallback = null;
+        this.mActivity = null;
     }
 
 }
