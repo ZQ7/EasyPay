@@ -25,7 +25,7 @@ implementation 'com.yi2580.easypay:EasyPay:1.0.0'
 **注册activity**
 
 ```xml
-        <!-- 微信支付 -->
+        <!-- 微信支付(不需要创建WXPayEntryActivity) -->
         <activity-alias
             android:name="微信支付注册时的包名.wxapi.WXPayEntryActivity"
             android:exported="true"
