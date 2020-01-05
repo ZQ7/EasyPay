@@ -77,7 +77,7 @@ public class AliPayReq {
      * 发送支付宝支付请求
      */
     public void send() {
-        if (mActivity==null||mHandler==null)
+        if (mActivity == null || mHandler == null)
             return;
         Runnable payRunnable = new Runnable() {
 
@@ -111,7 +111,7 @@ public class AliPayReq {
     public static class Builder {
         //上下文
         private Activity activity;
-
+        private String orderInfo;
         //支付宝分配给开发者的应用ID
         private String appId = EasyPay.ALI_PAY_APP_ID;
         //支付宝服务器主动通知商户服务器里指定的页面http/https路径。建议商户使用https
@@ -139,6 +139,7 @@ public class AliPayReq {
 
 
         private AliBizContent bizContent;
+        private String bizContentStr;
 
         public Builder() {
             super();
@@ -146,6 +147,12 @@ public class AliPayReq {
 
         public Builder with(Activity activity) {
             this.activity = activity;
+            return this;
+        }
+
+        public Builder with(Activity activity, String orderInfo) {
+            this.activity = activity;
+            this.orderInfo = orderInfo;
             return this;
         }
 
@@ -204,6 +211,11 @@ public class AliPayReq {
             return this;
         }
 
+        public Builder setBizContentStr(String bizContentStr) {
+            this.bizContentStr = bizContentStr;
+            return this;
+        }
+
         /**
          * 支付宝服务器主动通知商户服务器里指定的页面
          *
@@ -238,50 +250,49 @@ public class AliPayReq {
         }
 
         public AliPayReq create() {
-            //如果签名和私钥同时为空，抛出异常
-            if (TextUtils.isEmpty(sign) && TextUtils.isEmpty(privateKey))
-                throw new NullPointerException("sign is null");
+            if (TextUtils.isEmpty(this.orderInfo)) {
+                //如果签名和私钥同时为空，抛出异常
+                if (TextUtils.isEmpty(sign) && TextUtils.isEmpty(privateKey))
+                    throw new NullPointerException("sign is null");
 
-            if (bizContent == null)
-                throw new NullPointerException("AliBizContent is null");
+                if (bizContent == null && TextUtils.isEmpty(bizContentStr))
+                    throw new NullPointerException("AliBizContent is null");
 
-            if (TextUtils.isEmpty(timestamp)) {
-                timestamp = ALiPayUtils.getTimestamp();
-            }
+                if (TextUtils.isEmpty(timestamp)) {
+                    timestamp = ALiPayUtils.getTimestamp();
+                }
 
-            //判断签名方式
-            boolean rsa2 = TextUtils.equals(signType, "RSA2");
+                //判断签名方式
+                boolean rsa2 = TextUtils.equals(signType, "RSA2");
 
-            Map<String, String> keyValues = new HashMap<String, String>();
-            keyValues.put("app_id", appId);
-            keyValues.put("method", method);
-            keyValues.put("format", format);
-            keyValues.put("charset", charset);
-            keyValues.put("sign_type", signType);
-            keyValues.put("timestamp", timestamp);
-            keyValues.put("version", version);
-            keyValues.put("notify_url", notifyUrl);
-            keyValues.put("biz_content", bizContent.toJson());
+                Map<String, String> keyValues = new HashMap<String, String>();
+                keyValues.put("app_id", appId);
+                keyValues.put("method", method);
+                keyValues.put("format", format);
+                keyValues.put("charset", charset);
+                keyValues.put("sign_type", signType);
+                keyValues.put("timestamp", timestamp);
+                keyValues.put("version", version);
+                keyValues.put("notify_url", notifyUrl);
+                if (!TextUtils.isEmpty(bizContentStr)) {
+                    keyValues.put("biz_content", bizContentStr);
+                } else {
+                    keyValues.put("biz_content", bizContent.toJson());
+                }
 
-            String orderParam = ALiPayUtils.buildOrderParam(keyValues);
+                String orderParam = ALiPayUtils.buildOrderParam(keyValues);
 
-            //签名为空，私钥不为空，本地生成签名
-            if (TextUtils.isEmpty(sign) && !TextUtils.isEmpty(privateKey)) {
-                sign = ALiPayUtils.getSign(keyValues, privateKey, rsa2);
+                //签名为空，私钥不为空，本地生成签名
+                if (TextUtils.isEmpty(sign) && !TextUtils.isEmpty(privateKey)) {
+                    sign = ALiPayUtils.getSign(keyValues, privateKey, rsa2);
+                }
+                this.orderInfo = orderParam + "&sign=" + sign;
             }
 
 
             AliPayReq aliPayReq = new AliPayReq();
             aliPayReq.mActivity = this.activity;
-            aliPayReq.orderInfo = orderParam + "&sign=" + sign;
-
-            /*Map<String, String> params = ALiPay.buildOrderParamMap(bizContent.getOut_trade_no(), "测试", "0.01");
-            String orderParam = ALiPay.buildOrderParam(params);
-            String sign = ALiPay.getSign(params, privateKey);
-
-            AliPayReq aliPayReq = new AliPayReq();
-            aliPayReq.mActivity = this.activity;
-            aliPayReq.orderInfo = orderParam + "&" + sign;*/
+            aliPayReq.orderInfo = this.orderInfo;
 
             return aliPayReq;
         }
