@@ -80,14 +80,7 @@ public class ALiPayUtils {
         }
 
         String oriSign = sign(orderInfo.toString(), rsaKey, rsa2);
-        String encodedSign = "";
-
-        try {
-            encodedSign = URLEncoder.encode(oriSign, DEFAULT_CHARSET);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return encodedSign;
+        return encodeUTF8(oriSign);
     }
 
     /**
@@ -134,15 +127,19 @@ public class ALiPayUtils {
         sb.append(key);
         sb.append("=");
         if (isEncode) {
-            try {
-                sb.append(URLEncoder.encode(value, DEFAULT_CHARSET));
-            } catch (UnsupportedEncodingException e) {
-                sb.append(value);
-            }
+            sb.append(encodeUTF8(value));
         } else {
             sb.append(value);
         }
         return sb.toString();
+    }
+
+    public static String encodeUTF8(String value) {
+        try {
+            return URLEncoder.encode(value, DEFAULT_CHARSET);
+        } catch (UnsupportedEncodingException e) {
+            return value;
+        }
     }
 
     /**

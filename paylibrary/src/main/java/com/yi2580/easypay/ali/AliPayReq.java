@@ -285,6 +285,8 @@ public class AliPayReq {
                 //签名为空，私钥不为空，本地生成签名
                 if (TextUtils.isEmpty(sign) && !TextUtils.isEmpty(privateKey)) {
                     sign = ALiPayUtils.getSign(keyValues, privateKey, rsa2);
+                } else {
+                    sign = ALiPayUtils.encodeUTF8(sign);
                 }
                 this.orderInfo = orderParam + "&sign=" + sign;
             }
