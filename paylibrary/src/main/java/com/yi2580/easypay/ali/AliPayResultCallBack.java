@@ -9,12 +9,13 @@ public interface AliPayResultCallBack {
     /**
      * 支付成功
      */
-    void onSuccess();
+    void onSuccess(String result);
 
     /**
      * 正在处理中，支付结果未知（有可能已经支付成功），请查询商户订单列表中订单的支付状态
      */
-    void onDealing();
+    void onDealing(String result);
+
     /**
      * 支付失败
      * https://docs.open.alipay.com/204/105301/

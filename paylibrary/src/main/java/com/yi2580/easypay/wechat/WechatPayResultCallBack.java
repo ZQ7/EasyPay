@@ -9,7 +9,7 @@ public interface WechatPayResultCallBack {
     /**
      * 支付成功
      */
-    void onSuccess();
+    void onSuccess(String prepayId, String extData);
 
     /**
      * 支付失败

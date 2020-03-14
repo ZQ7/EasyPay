@@ -53,12 +53,12 @@ public class AliPayReq {
                         // 判断resultStatus 为9000则代表支付成功
                         if (TextUtils.equals(resultStatus, AliPayAPI.ALI_PAY_SUCCESS)) {
                             // 该笔订单是否真实支付成功，需要依赖服务端的异步通知。
-                            mCallback.onSuccess();
+                            mCallback.onSuccess(resultInfo);
                         } else if (TextUtils.equals(resultStatus, AliPayAPI.ALI_PAY_DEALING)) {
                             //正在处理中，支付结果未知
-                            mCallback.onDealing();
+                            mCallback.onDealing(resultInfo);
                         } else if (TextUtils.equals(resultStatus, AliPayAPI.ALI_PAY_CANCEL)) {
-                            //用户取消zhifu
+                            //用户取消支付
                             mCallback.onCancel();
                         } else {
                             // 该笔订单真实的支付结果，需要依赖服务端的异步通知。

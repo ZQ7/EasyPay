@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.tencent.mm.opensdk.modelpay.PayReq;
+import com.tencent.mm.opensdk.modelpay.PayResp;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.yi2580.easypay.EasyPay;
@@ -53,9 +54,17 @@ public class WechatPayReq {
         if (mCallback == null) {
             return;
         }
+
         if (baseResp.errCode == WechatPayAPI.WECHAT_PAY_SUCCESS) {
             //成功
-            mCallback.onSuccess();
+            String prepayId = null;
+            String extData = null;
+            if (baseResp instanceof PayResp) {
+                PayResp payResp = (PayResp) baseResp;
+                prepayId = payResp.prepayId;
+                extData = payResp.extData;
+            }
+            mCallback.onSuccess(prepayId, extData);
         } else if (baseResp.errCode == WechatPayAPI.WECHAT_PAY_CANCEL) {
             //取消
             mCallback.onCancel();
