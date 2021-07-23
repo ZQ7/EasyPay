@@ -1,6 +1,6 @@
 # EasyPay
 
-[ ![Download](https://api.bintray.com/packages/zhangqi/maven/EasyPay/images/download.svg?version=1.0.7) ](https://bintray.com/zhangqi/maven/EasyPay)
+[ [![](https://jitpack.io/v/ZQ7/EasyPay.svg)](https://jitpack.io/#ZQ7/EasyPay) ](https://jitpack.io/#ZQ7/EasyPay)
 
 > 对微信支付和支付宝支付的App端SDK进行二次封装，对外提供一个较为简单的接口和支付结果回调
 
@@ -17,7 +17,7 @@ https://pay.weixin.qq.com/wiki/doc/api/app/app.php?chapter=8_1
 #### 在app目录下的build.gradle中添加依赖(微信支付宝SDK版本号请查询文档自行添加)
 
 ```gradle
-implementation 'com.yi2580.easypay:EasyPay:1.0.7'
+implementation 'com.github.ZQ7:EasyPay::1.1.0'
 ```
 
 ## 2. Android Manifest配置
